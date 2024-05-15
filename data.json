@@ -1,0 +1,226 @@
+{
+	"comment": 
+		"此参数为注释说明：##### pc ##### 对象组件中： 0：其它效果；1：幻灯片；2：滚轮事件；3：视差效果。#### mobile #### 对象组件中： 0：其它效果；1：幻灯片；2：滑屏切换；3：微信平台。 #### css #### 对象组件中： 1：css3动画",
+	"pc": {
+		"0": [
+			{
+				"img": "./images/pc-0-7.jpg",
+				"name": "图片懒加载功能 - 基于lazyload.js插件",
+        "time": "",
+				"demo": "./pack/pc/0/7",
+				"down": "./pack/pc/0/7/down.zip",
+				"type": "pc-0-7",
+				"desc": "使用vvo的lazyload插件，实现图片懒加载功能，实现简单，引入lazyload.js文件，给需要懒加载的图片添加&lt;img src=\"placeholder.gif\" data-src=\"1.jpg\" onload=\"lzld(this)\"/&gt;即可实现。官方地址：https://vvo.github.io/lazyload"
+			},
+			{
+				"img": "./images/pc-0-6.jpg",
+				"name": "云吉年会抽奖功能系统 - 原生JS",
+        "time": "",
+				"demo": "./pack/pc/0/6",
+				"down": "./pack/pc/0/6/down.zip",
+				"type": "pc-0-6",
+				"desc": "根据max值，设置抽奖人数，每个值对应每个参会人员抽取的编号，点击抽奖开始产生随机数，点击停止时，显示当前随机数，并设置到本地存储中，防止再次出现。提供中奖号码奖项选择，点击清空缓存则重新开始新一轮抽奖！"
+			},
+			{
+				"img": "./images/pc-0-5.jpg",
+				"name": "stackblur.js图片模糊 - 原生JS",
+        "time": "",
+				"demo": "./pack/pc/0/5",
+				"down": "./pack/pc/0/5/down.zip",
+				"type": "pc-0-5",
+				"desc": "使用插件stackblur.js实现图片模糊功能，原理未获取图片资源再使用canvas进行渲染，通过canvas，改变对应参数，改变图片模糊程度！"
+			},
+			{
+				"img": "./images/pc-0-4.jpg",
+				"name": "smartcrop.js图片裁剪 - 原生JS",
+        "time": "",
+				"demo": "./pack/pc/0/4",
+				"down": "./pack/pc/0/4/down.zip",
+				"type": "pc-0-4",
+				"desc": "使用插件smartcrop.js具备人脸识别功能，实现图片裁剪，将图片以canvas形式展现！"
+			},
+			{
+				"img": "./images/pc-0-3.jpg",
+				"name": "图片懒加载功能 - 原生JS",
+        "time": "",
+				"demo": "./pack/pc/0/3",
+				"down": "./pack/pc/0/3/down.zip",
+				"type": "pc-0-3",
+				"desc": "该功能考虑PC端或者移动端的图片数量过多，导致加载缓慢，使用的一个解决方案，页面滚动到对应位置，加载相应图片资源。"
+			},
+			{
+				"img": "./images/pc-0-2.jpg",
+				"name": "项目查找功能 - 原生JS",
+        "time": "",
+				"demo": "./pack/pc/0/2",
+				"down": "./pack/pc/0/2/down.zip",
+				"type": "pc-0-2",
+				"desc": "项目繁多查找麻烦，使用JS把每个对应的项目路径等信息存储起来，在需要的时候，直接搜索对应的名称即可找到，提高效率。"
+			},
+			{
+				"img": "./images/pc-0-1.jpg",
+				"name": "JS分页功能 - 原生JS",
+        "time": "",
+				"demo": "./pack/pc/0/1",
+				"down": "./pack/pc/0/1/down.zip",
+				"type": "pc-0-1",
+				"desc": "通过JS获取数组数据并把分配每页显示条数，显示对应数据。传入内容元素、导航元素、数组数据、每页显示条数即可！"
+			}
+		],
+		"1": [
+			{
+				"img": "./images/pc-1-1.jpg",
+				"name": "幻灯片-基于jQuery库",
+        "time": "",
+				"demo": "./pack/pc/1/1",
+				"down": "./pack/pc/1/1/down.zip",
+				"type": "pc-1-1",
+				"desc": "基于jQuery库的一套幻灯片，存在两种切换模式，大图使用向左left切换，小图可使用透明fadeIn切换。"
+			}
+		],
+		"2": [
+			{
+				"img": "./images/pc-2-1.jpg",
+				"name": "滚轮切换上下屏-滚轮事件",
+        "time": "",
+				"demo": "./pack/pc/2/1",
+				"down": "./pack/pc/2/1/down.zip",
+				"type": "pc-2-1",
+						"desc": "滚动滚轮滑屏效果，并且按键盘上下键能实现同样效果，多用于视差滚动中。"
+			}
+		],
+		"3": [
+			{
+				"img": "./images/pc-3-1.jpg",
+				"name": "原生JS实现视差鼠标移动效果",
+        "time": "",
+				"demo": "./pack/pc/3/1",
+				"down": "./pack/pc/3/1/down.zip",
+				"type": "pc-3-1",
+				"desc": "鼠标移动，背景及文字跟随移动形成视差效果。目前两种解决方案，一种为原生JS实现，兼容IE6+，另外一种基于jQuery库，较为流畅，兼容IE9+。"
+			}
+		]		
+	},
+	"mobile": {
+		"0": [
+			{
+				"img": "./images/mobile-0-4.jpg",
+				"name": "手机重力感应效果-parallax.js",
+        "time": "",
+				"demo": "./pack/mobile/0/4",
+				"down": "./pack/mobile/0/4/down.zip",
+				"type": "mobile-0-4",
+				"desc": "使用parallaxjs库，实现手机的重力感应效果，圆点会跟随手机的转动而移动；同时在PC中，也可根据鼠标移动而实现视差效果。"
+			},
+			{
+				"img": "./images/mobile-0-3.jpg",
+				"name": "手机'摇一摇'效果-DeviceMotion",
+        "time": "",
+				"demo": "./pack/mobile/0/3",
+				"down": "./pack/mobile/0/3/down.zip",
+				"type": "mobile-0-3",
+				"desc": "使用DeviceMotion监听手机重力加速度的变化，如果值大，则说明摇动了手机，进而进行相应的操作！"
+			},
+			{
+				"img": "./images/mobile-0-2.jpg",
+				"name": "侧边菜单点击效果-原生JS",
+        "time": "",
+				"demo": "./pack/mobile/0/2",
+				"down": "./pack/mobile/0/2/down.zip",
+				"type": "mobile-0-2",
+				"desc": "实现点击右侧菜单，弹出导航内容，并通过滑动屏幕，也可实现打开导航菜单效果。"
+			},
+			{
+				"img": "./images/mobile-0-1.jpg",
+				"name": "H5擦玻璃效果",
+        "time": "",
+				"demo": "./pack/mobile/0/1",
+				"down": "./pack/mobile/0/1/down.zip",
+				"type": "mobile-0-1",
+				"desc": "基于H5的canvas标签，实现擦玻璃效果，同时运行在PC端和移动端上"
+			}
+		],
+		"1": [
+			{
+				"img": "./images/mobile-1-1.jpg",
+				"name": "幻灯片-基于Zepto移动端JS库",
+        "time": "",
+				"demo": "./pack/mobile/1/1",
+				"down": "./pack/mobile/1/1/down.zip",
+				"type": "mobile-1-1",
+				"desc": "使用移动端JS库Zepto,制作的滑动幻灯片，用于移动端上。"
+			}
+		],
+		"2": [
+			{
+				"img": "./images/mobile-2-3.jpg",
+				"name": "竖向滑屏效果，滑动流畅，使用swiper.js",
+        "time": "",
+				"demo": "./pack/mobile/2/3",
+				"down": "./pack/mobile/2/3/down.zip",
+				"type": "mobile-2-3",
+				"desc": "使用Swiper做滑动插件库，快速制作H5滑屏，体验流畅，可横屏竖屏，使用简单。官网地址：www.swiper.com.cn"
+			},
+			{
+				"img": "./images/mobile-2-2.jpg",
+				"name": "竖向滑屏效果，叠加切换-基于Zepto移动端JS库",
+        "time": "",
+				"demo": "./pack/mobile/2/2",
+				"down": "./pack/mobile/2/2/down.zip",
+				"type": "mobile-2-2",
+				"desc": "微信H5动画营销页面，竖向滑屏切换效果，用于公司宣传、招聘等地方。优化数据读取，第一次打开只加载首屏内容，滑动屏幕加载下屏对应内容，减少一次性请求过多数据。"
+			},
+			{
+				"img": "./images/mobile-2-1.jpg",
+				"name": "竖向滑屏效果-基于Zepto移动端JS库",
+        "time": "",
+				"demo": "./pack/mobile/2/1",
+				"down": "./pack/mobile/2/1/down.zip",
+				"type": "mobile-2-1",
+				"desc": "微信H5动画营销页面，竖向滑屏切换效果，用于公司宣传、招聘等地方。"
+			}
+		],
+		"3": [
+			{
+				"img": "./images/mobile-3-1.jpg",
+				"name": "微信分享功能-微信平台开发",
+        "time": "",
+				"demo": "./pack/mobile/3/1",
+				"down": "./pack/mobile/3/1/down.zip",
+				"type": "mobile-3-1",
+				"desc": "微信平台H5页面宣传，需要采用JSSDK于微信公众号对接，方能分享，获取公众号的AppID及AppSecret码即可生成签名！"
+			}
+		]
+	},
+	"css": {
+		"1": [
+			{
+				"img": "./images/css-1-3.jpg",
+				"name": "CSS3 3D旋转 - CSS3动画",
+        "time": "",
+				"demo": "./pack/css/1/3",
+				"down": "./pack/css/1/3/down.zip",
+				"type": "css-1-3",
+				"desc": "纯CSS3制作3D旋转效果，关键CSS3属性：-webkit-perspective: 800;、translateZ(200px);、-webkit-transform-style:preserve-3d"
+			},
+			{
+				"img": "./images/css-1-2.jpg",
+				"name": "CSS3制作loading效果-CSS3动画",
+        "time": "",
+				"demo": "./pack/css/1/2",
+				"down": "./pack/css/1/2/down.zip",
+				"type": "css-1-2",
+				"desc": "纯CSS3制作loading加载效果, 使用animation设置不同时间段执行动画，形成loading。"
+			},
+			{
+				"img": "./images/css-1-1.jpg",
+				"name": "CSS3人物走动效果-CSS3动画",
+        "time": "",
+				"demo": "./pack/css/1/1",
+				"down": "./pack/css/1/1/down.zip",
+				"type": "css-1-1",
+				"desc": "纯CSS制作人物走动效果，人物动作分解到一张图中，使用keyframes加上animation属性的steps()，切换background-position位置，从而形成动画效果。"
+			}
+		]
+	}
+}

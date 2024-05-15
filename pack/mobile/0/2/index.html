@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=no;"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />     
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />     
+	<meta content="telephone=no" name="format-detection" /> 
+	<meta http-equiv="pragma" content="no-cache" />
+	<!-- windows phone 点击无高光 -->
+	<meta name="msapplication-tap-highlight" content="no">
+	<title>菜单点击效果</title>
+	<style type="text/css">
+		* {
+			margin:0;
+			padding:0;
+		}
+		html,body {
+			height:100%;
+			overflow-x:hidden;
+		}
+		ul, ol {
+			list-style:none;
+		}
+		p {
+			padding:20px;
+		}
+		.container {
+			position:relative;
+			height:100%;
+		}
+		.main {
+			position:relative;
+			left:0;
+			height:100%;
+			background:#f0f;
+			-webkit-transition:all .4s ease;
+			transition:all .4s ease;
+			-webkit-transform:translate3d(0,0,0) scale(1);
+			transform:translate3d(0,0,0) scale(1);
+		}
+		.header {
+			position: relative;
+			height:60px;
+			background:#fff;
+			z-index:999;
+			-webkit-box-shadow:0 2px 6px rgba(0,0,0,.4);
+		}
+		.menu {
+			position:absolute;
+			right:0;
+			top:0;
+			width:60px;
+			height:60px;
+			cursor:pointer;
+			overflow:hidden;
+			background:#FF003D;
+		}
+		.menu li {
+			position:absolute;
+			top:18px;
+			left:50%;
+			width:30px;
+			height:4px;
+			margin-left:-15px;
+			background:#fff;
+			-webkit-transition:all .4s ease;
+			transition:all .4s ease;
+		}
+		.menu li:nth-child(2) {
+			top:28px;
+		}
+		.menu li:nth-child(3) {
+			top:38px;
+		}
+		.container.on .menu li:nth-child(1) {
+			-webkit-transform: translate3d(0,10px,0) rotate(-40deg);
+			transform: translate3d(0,10px,0) rotate(-40deg);
+		}
+		.container.on .menu li:nth-child(2) {
+			-webkit-transform: translate3d(80px,0,0);
+			transform: translate3d(80px,0,0);
+		}
+		.container.on .menu li:nth-child(3) {
+			-webkit-transform: translate3d(0,-10px,0) rotate(40deg);
+			transform: translate3d(0,-10px,0) rotate(40deg);
+		}
+		.nav {
+			position:fixed;
+			top:0;
+			right:0;
+			width:160px;
+			height:100%;
+			background:#ff0;
+			box-shadow: -2px 0 6px rgba(0,0,0,.4);
+			-webkit-transform: translate3d(165px,0,0) scale(0.95);
+			transform: translate3d(165px,0,0) scale(0.95);
+			-webkit-transition:all .4s ease;
+			transition:all .4s ease;
+		}
+		.nav li {
+			text-align:center;
+			padding:10px 0;
+			cursor:pointer;
+			border-bottom:1px dashed #E2E202;
+		}
+		.nav li:hover {
+			background:#F4F402;
+		}
+	</style>
+</head>
+<body>
+	
+	<div id="touch" class="container">
+		<section id="main" class="main">
+			<header class="header">
+				<ul id="menu" class="menu">
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</header>
+			<article>
+				<p>这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容</p>
+			</article>
+		</section>
+		<nav id="nav" class="nav">
+			<ul>
+				<li>HTML</li>
+				<li>CSS</li>
+				<li>JS</li>
+				<li>AJAX</li>
+				<li>JSON</li>
+				<li>SASS</li>
+				<li>GULP</li>
+			</ul>
+		</nav>
+	</div>
+	
+	<script type="text/javascript">
+	;(function(window, undefined) {
+
+		var mokylin = function() {
+			return {
+				// 检测类
+				hasClass: function(el, cls) {
+					return el.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+				},
+				// 添加类
+				addClass: function(el, cls) {
+					this.hasClass(el, cls) || (el.className += ' ' + cls);
+				},
+				// 移除类
+				removeClass: function(el, cls) {
+					if (this.hasClass(el, cls)) {
+						var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+						el.className = el.className.replace(reg, '');
+					}
+				}
+			};
+		}();
+
+		var hasTouch = 'ontouchstart' in window ? true : false,
+			touchStart = hasTouch ? 'touchstart' : 'mousedown',
+			touchMove = hasTouch ? 'touchmove' : 'mousemove',
+			touchEnd = hasTouch ? 'touchend' : 'mouseup';
+
+		/* ******************************
+		* 参数说明
+		* 版本：1.0.0
+		* touch: 最外层触摸元素
+		* menu: 菜单
+		* main: 主要中心内容
+		* nav: 侧边导航内容
+		* max: 最大移动宽度
+		* on: 打开或关闭状态
+		*********************************/
+		function MenuNav(opts) {
+			this.touch = opts.touch;
+			this.menu = opts.menu;
+			this.main = opts.main;
+			this.nav = opts.nav;
+			this.max = opts.max;
+			this.on = opts.on;
+		}
+		MenuNav.prototype = {
+			constructor: MenuNav,
+			// 菜单开关
+			menuSwitch: function() {
+				// 如果关闭则打开
+				if (!mokylin.hasClass(this.touch, this.on)) {
+					mokylin.addClass(this.touch, this.on);
+					this.setEleMove(this.main, -this.max, 0.95, 0.4, 0);
+					this.setEleMove(this.nav, 0, 1, 0.4, 0);
+				} else {
+					mokylin.removeClass(this.touch, this.on);
+					this.setEleMove(this.main, 0, 1, 0.4, 0);
+					this.setEleMove(this.nav, this.max+5, 0.95, 0.4, 0);
+				}
+			},
+			setEleMove: function(el, x, scale, ms) {
+				el.style.cssText = '-webkit-transform: translate3d('+x+'px,0,0) scale('+scale+');\
+				transform: translate3d('+x+'px,0,0) scale('+scale+');\
+				-webkit-transition: all '+ms+'s ease;\
+				transition: all '+ms+'s ease;';
+			},
+			touchEvent: function() {
+				var self = this,
+					startX = 0,
+					moveX = 0,
+					moveFlag = false,
+					x, scale;
+
+				function touchStartFun(e) {
+					var e = event || window.event;
+
+					if ((e.target.id != self.menu.id) && (e.target.parentNode.id != self.menu.id)) {
+						startX = parseInt(hasTouch ? e.touches[0].pageX : e.clientX);
+						moveFlag = true;
+					}
+
+				}
+
+				function touchMoveFun(event) {
+					if (!moveFlag) return;
+					var e = event || window.event;
+					e.preventDefault();		// 阻止默认行为
+					moveX = parseInt(hasTouch ? e.touches[0].pageX : e.clientX);
+					// 每移动两个像素，元素移动一个像素
+					x = parseInt((moveX - startX) / 2);		 
+					// 计算公式 最大宽度160，缩小比例0.95，得出 -160/32 = -5 * 0.01 = -0.05, 1+0.05=0.95
+					scale = x / 32 * 0.01;
+					// 如果小于，则证明往右滑动，否则往左
+					if (moveX - startX < 0) {
+						if (!mokylin.hasClass(self.touch, self.on)) {
+							if (x >= -self.max) {
+								self.setEleMove(self.main, x, 1+scale, 0);
+								// 165为导航偏移的位置
+								self.setEleMove(self.nav, self.max+x, 0.95+Math.abs(scale), 0);
+							}
+						}
+					} else {
+						if (mokylin.hasClass(self.touch, self.on)) {
+							if (x <= self.max) {
+								self.setEleMove(self.main, -self.max+x, 0.95+Math.abs(scale), 0);
+								// 最大值为导航偏移的位置
+								self.setEleMove(self.nav, x, 1-Math.abs(scale), 0);
+							}
+						}
+					}
+
+				}
+
+				function touchEndFun(event) {
+					var e = event || window.event;
+					moveFlag = false;
+
+					// 防止if获取不到id报错
+					try {
+						if (e.target.id == self.menu.id || e.target.parentNode.id == self.menu.id) {					
+							self.menuSwitch();	// 点击菜单
+						} else {
+							// 如果向左滑动,并且防止触摸了屏幕但没有移动位置
+							if (moveX - startX < 0 && moveX != 0) {
+								// 并且滑动大于40px
+								if (moveX - startX < -40) {
+
+									// 移动菜单及内容
+									self.setEleMove(self.main, -self.max, 0.95, 0.4, 0);
+									self.setEleMove(self.nav, 0, 1, 0.4, 0);
+									// 添加当前类
+									mokylin.addClass(self.touch, self.on);
+									return;
+								}
+							} 
+							// 如果滑动位置距离太小或者向右滑，则回到原位
+							self.setEleMove(self.main, 0, 1, 0.4, 0);
+							self.setEleMove(self.nav, self.max+5, 0.95, 0.4, 0);
+							// 添加当前类
+							mokylin.removeClass(self.touch, self.on);
+						}
+					} catch(ex) {
+						// 跳过
+					}
+				}
+
+
+				self.touch.addEventListener(touchStart, touchStartFun, false);
+				self.touch.addEventListener(touchMove, touchMoveFun, false);
+				self.touch.addEventListener(touchEnd, touchEndFun, false);
+			},
+			init: function() {
+				this.touchEvent();
+			}
+		};
+
+		window.MenuNav = MenuNav;
+
+	})(window);
+
+	function $$(id) {
+		return (!id) ? null : document.getElementById(id);
+	}
+
+	// 实例化
+	new MenuNav({
+		touch: $$('touch'),
+		menu: $$('menu'),
+		main: $$('main'),
+		nav: $$('nav'),
+		max: 160,
+		on: 'on'
+	}).init();
+
+	</script>
+</body>
+</html>

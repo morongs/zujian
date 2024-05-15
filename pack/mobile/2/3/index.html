@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<title>竖向滑屏</title>
+<meta name="keywords" content="关键词" />
+<meta name="description" content="描述" />
+<meta name="author" content="云吉RIKEE(www.rikee.com)" />
+<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=no;"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />     
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />     
+<meta content="telephone=no" name="format-detection" /> 
+<meta http-equiv="pragma" content="no-cache" />
+<!-- windows phone 点击无高光 -->
+<meta name="msapplication-tap-highlight" content="no">
+<style type="text/css">
+section, article, nav, aside, footer, header, div, p, ul, li, input, textarea {-webkit-box-sizing: border-box;box-sizing: border-box;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td {margin:0;padding:0;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+fieldset,img{border:0;}
+h1, h2, h3, h4, h5, h6 {font-weight: normal;}
+ol, ul {list-style:none;}
+a:focus {outline: 0;}
+a:link, a:visited {color: #281204;text-decoration: none;}
+html {font-size: 625%;}
+html,body{height: 100%;-webkit-user-select: none;user-select: none;-webkit-text-size-adjust: 100%;}
+body{color:#fff;line-height:1.5;font-size:.16rem;font-family:"Helvetica Neue", Helvetica, STHeiTi,Microsoft YaHei, sans-, Microsoft JhengHei, Arial;-webkit-appearance: none;-webkit-overflow-scrolling: touch;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+/* 清除点击虚拟框 */
+a, div, p, span, ul, li, i, img, input {outline: 0;text-decoration: none;-webkit-tap-highlight-color: transparent;}
+/* 清除浮动 */
+.clearfix {*zoom: 1;}
+.clearfix:after {display: block;content: "\200B";clear: both;height: 0;}
+.ani {-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);-webkit-backface-visibility: hidden;backface-visibility: hidden;-webkit-perspective: 1000;perspective: 1000;}
+.wrap{position:relative;color:#fff;height: 100%;overflow: hidden;}
+.item, .item .box {width: 100%;height: 100%;overflow: hidden;}
+.hide {display: none;}
+/* 滑块 */
+.item-1 {background: #048599;}
+.item-2 {background: #349b66;}
+.item-3 {background: #e05365;}
+.item-4 {background: #44a7cb;}
+.item-5 {background: #fc9590;}
+.item-6 {background: #d487b4;}
+.item-7 {background: #f3f1bb;}
+.item-8 {background: #f3d2ac;}
+/* 页面加载提示 */
+.mod_loading{position:absolute;height:100%;left:0;top:0;width:100%;z-index:3000;background-color:#b9ccd5;display:-webkit-box;-webkit-box-align:center;}
+.mod_loading .content{text-align:center;-webkit-box-flex:1;margin:0 80px;}
+.mod_loading .content .progress{height:13px;padding:2px;-webkit-border-radius:17px;border-radius:17px;background-color:#242a39;}
+.mod_loading .content .progress span{display:block;height:13px;-webkit-border-radius:13px;border-radius:13px;background-color:#65cfd5;}
+.mod_loading .content p{line-height:34px;color:#5f696a;}
+/* 竖屏检测 */
+.vertical {display:none;position: absolute;left: 0;top: 0;width: 100%;height: 100%;background: #1FACE2;z-index: 2000;}
+.vertical p {position: absolute;color: #fff;top: 50%;left: 50%;width:300px;padding: 10px 0;font-size: .16rem;border:1px solid #fff;text-align:center;-webkit-transform:translate(-50%,-60%);transform:translate(-50%,-60%);
+} 
+/* 音乐 */
+#audioPlay {position: absolute;right: 10px;top: 10px;width: 30px;height: 30px;z-index: 1000;background: url(music.png) no-repeat;background-size: 100% auto;-webkit-animation: audioPlay 1.2s infinite linear;animation: audioPlay 1.2s infinite linear;}
+#audioPlay.off {-webkit-animation: none;animation: none;}
+/* 向上箭头 */
+.arrow {position: absolute;bottom: 20px;left: 50%;width: 26px;height: 12px;margin-left: -13px;background: url(arrow.png) no-repeat;background-size: 100% auto;z-index: 99;-webkit-animation: slide_up 1.2s infinite ease-in-out;animation: slide_up 1.2s infinite ease-in-out;}
+@-webkit-keyframes slide_up {0% {opacity: .8; -webkit-transform: translateY(0);}100% {opacity: 0; -webkit-transform: translateY(-15px);}}
+@keyframes slide_up {0% {opacity: .8; transform: translateY(0);}100% {opacity: 0; transform: translateY(-15px);}}
+@-webkit-keyframes audioPlay {100% {-webkit-transform: rotate(360deg);}}
+@keyframes audioPlay {100% {transform: rotate(360deg);}}
+</style>
+</head>
+<body class="bodybox">
+<div class="wrap" id="wrap">
+
+    <div class="item item-1">
+        <div class="box">
+            1
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-2">
+        <div class="box">
+            2
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-3">
+        <div class="box">
+            3
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-4">
+        <div class="box">
+            4
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-5">
+        <div class="box">
+            5
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-6">
+        <div class="box">
+            6
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-7">
+        <div class="box">
+            7
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <div class="item item-8">
+        <div class="box">8</div>
+    </div>
+</div>
+
+<!-- loading -->
+<div class="mod_loading" id="loading">
+    <div class="content">
+        <div class="progress"><span id="progress_bg" style="width:0;"></span></div>
+        <p>Loading...</p>
+    </div>
+</div>
+
+<!-- 音乐 -->
+<audio id="audio" autoplay src="" loop></audio>
+<div id="audioPlay"></div>
+
+<!-- 竖屏检测 -->
+<div id="vertical" class="vertical">
+    <p>请使用竖屏浏览获取最佳体验</p>
+</div>
+
+<script type="text/javascript" src="iSlider.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<script>
+    // 滑屏
+    new iSlider({
+        wrap:'#wrap',
+        item:'.item',
+        // 加载图片
+        loadingImgs:[
+            'http://imgcache.gtimg.cn/mediastyle/mobile/event/20150129_double_language_mv/img/open_content.png?d=20150203165217',
+            'http://imgcache.gtimg.cn/mediastyle/mobile/event/20150129_double_language_mv/img/invite_bg.png?d=20150203165217',
+            'http://imgcache.gtimg.cn/mediastyle/mobile/event/20150129_double_language_mv/img/open_bg_after.png?d=20150203165217'
+        ],
+        // 加载进度
+        onloading:function (complete,total) {
+            document.getElementById('progress_bg').style.width=complete/total*100+'%';
+            if (complete==total) {
+                document.getElementById('loading').style.display="none"
+            }
+        }
+    });
+    // 音乐播放
+    new AudioPlay({
+        audio: document.getElementById('audio'),
+        btn: document.getElementById('audioPlay'),
+        off: 'off'
+    });
+</script>
+</body>
+</html>

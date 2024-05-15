@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta content="all" name="robots" />
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="keywords" content="默容, 组件库, 前端组件库" />
+	<meta name="description" content="默容, 默而识之，休休有容！" />
+	<meta name="author" content="默容(MoRong)" />
+	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />     
+	<meta content="telephone=no" name="format-detection" />
+	<title>默容的组件库</title>
+	<link rel="shortcut icon" href="./favicon.ico" />
+	<link rel="icon" href="./favicon.ico" />
+	<link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+	
+	<div class="container w1150">
+		<nav class="nav">
+			<h1><a href="index.html">默容的组件库</a></h1>
+			<ul id="nav">
+				<li class="nav-first"><a href="#" data-type="all" class="on">全部</a></li>
+				<li>
+					<a href="#" data-type="pc">PC组件</a>
+					<ul class="sub-nav">
+						<li><a href="#" data-type="pc-1">幻灯片</a></li>
+						<li><a href="#" data-type="pc-2">滚轮事件</a></li>
+						<li><a href="#" data-type="pc-3">视差效果</a></li>
+						<li><a href="#" data-type="pc-0">其它效果</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" data-type="mobile">移动端组件</a>
+					<ul class="sub-nav">
+						<li><a href="#" data-type="mobile-1">幻灯片</a></li>
+						<li><a href="#" data-type="mobile-2">滑屏切换</a></li>
+						<li><a href="#" data-type="mobile-3">微信平台</a></li>
+						<li><a href="#" data-type="mobile-0">其它效果</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#" data-type="css">CSS效果</a>
+					<ul class="sub-nav">
+						<li><a href="#" data-type="css-1">CSS3动画</a></li>
+					</ul>
+				</li>
+			</ul>
+			<div id="navBg" class="nav-bg"></div>
+			<form id="search" class="search" action="" method="get">
+				<input name="name" type="text" />
+			</form>
+		</nav>
+		<!-- 组件列表 begin -->
+		<div class="main">
+			<ul id="package" class="package-list">
+				<li></li>
+			</ul>
+		</div>
+		<!-- 组件列表 end -->
+
+		<!-- 弹出框 begin -->
+		<div id="box" class="box"></div>
+		<div id="boxMain" class="box-main">
+			<div id="boxClose" class="box-close"></div>
+			<div class="box-info">
+				<img src="./images/pc-1-1.jpg" />
+				<div class="box-txt">
+					<h3>基于jQuery库-幻灯片</h3>
+					<p>参数说明：new Slider({ban:'', slider:'',nav:'', _prev:'', _next:'', _type:'', _time:'', on:''}); ban://最大容器; slider://幻灯片切换容器; nav://导航; _prev://上一个; _next://下一个; _type://切换类型(left,fadeIn); _time:// 切换时间; on://当前位置类名</p>
+					<p>
+						<a href="#" target="_blank" title="查看Demo">查看</a>
+						<a href="#" target="_blank" title="下载组件">下载</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		<!-- 弹出框 end -->
+	</div>
+
+	<div id="gotoTop" class="gotoTop" title="Top"></div>
+
+	<script src="./js/mokylin.js"></script>
+	<script src="./js/com.js"></script>
+</body>
+</html>

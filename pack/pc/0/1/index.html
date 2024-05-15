@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>原生JavaScript实现分页效果练习</title>
+	<style>
+		ol, ul {
+			list-style: none;
+		}
+		li {
+			float:left;
+			margin:0 10px;
+		}
+		ol li {
+			cursor:pointer;
+			padding:1px 5px;
+			background:#eee;
+			border:1px solid #ccc;
+		}
+		ol li.on {
+			background:#f00;
+			color:#fff;
+			border-color:#f00;
+		}
+		span {
+			color:#f00;
+		}
+	</style>
+</head>
+<body>
+	<ul id="data">
+		<li>
+			<img src="1.jpg" alt="服饰 —— 服装模板" />
+			<h2>服饰 —— 服装模板<span>NO.A001</span></h2>
+		</li>
+		<li>
+			<img src="1.jpg" alt="服饰 —— 服装模板" />
+			<h2>服饰 —— 服装模板<span>NO.A001</span></h2>
+		</li>
+	</ul>
+	<div style="clear:both;"></div>
+	<ol id="page">
+		<li>1</li>
+		<li>2</li>
+	</ol>
+
+	<script src="data.js"></script>
+</body>
+</html>

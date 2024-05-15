@@ -1,0 +1,36 @@
+2015-05-06 09:41:02
+getSignPackage
+2015-05-06 09:41:02
+token_url:https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=AppID&secret=AppSecret
+2015-05-06 09:41:03
+stdClass Object
+(
+    [errcode] => 40001
+    [errmsg] => invalid credential, access_token is invalid or not latest
+)
+
+2015-05-06 09:41:03
+access_token:
+2015-05-06 09:41:03
+ticket_url:https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=
+2015-05-06 09:41:03
+ticket:
+2015-05-06 09:41:03
+
+2015-05-06 09:41:03
+http://127.0.0.5/dev/pack/mobile/3/1/
+2015-05-06 09:41:03
+0sKjZiL36PTZT533
+2015-05-06 09:41:03
+jsapi_ticket=&noncestr=0sKjZiL36PTZT533&timestamp=1430876463&url=http://127.0.0.5/dev/pack/mobile/3/1/
+2015-05-06 09:41:03
+d34d449bc2eadcaf367a81a59a94f96c36348938
+2015-05-06 09:41:03
+Array
+(
+    [appId] => AppID
+    [nonceStr] => 0sKjZiL36PTZT533
+    [timestamp] => 1430876463
+    [signature] => d34d449bc2eadcaf367a81a59a94f96c36348938
+)
+

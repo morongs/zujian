@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>图片模糊javascript插件</title>
+	<style type="text/css">
+	ul {margin: 0;padding: 0;list-style: none;}
+	.stackblur-img {
+		display: none;
+	}
+	img {
+		width: 200px;
+	}
+	.tab {
+		margin: 20px 0;
+	}
+	.tab li {
+		display: inline-block;
+		padding: 5px 8px;
+		border:1px solid #999;
+		margin-right: 10px;
+		cursor: pointer;
+	}
+	</style>
+</head>
+<body>
+	<h3><a href="https://github.com/flozz/StackBlur" target="_blank">图片模糊插件</a></h3>
+
+	<ul id="tab" class="tab">
+		<li data-id="0">stackBlurImage</li>
+		<li data-id="1">stackBlurCanvasRGB</li>
+		<li data-id="2">stackBlurCanvasRGBA</li>
+	</ul>
+
+	<p><input type="range" id="range" min="0" max="100" value="0" /><br/><span>滑动改变参数</span></p>
+
+	<div>
+		<img src="./stackblur.jpg" id="img" class="stackblur-img" />
+		<canvas id="canvas"></canvas>
+	</div>
+
+
+
+
+	<script type="text/javascript" src="./stackblur.js"></script>
+
+	<script type="text/javascript">
+	;(function(window, undefined) {
+
+		/**
+		 * 参数说明：
+		 * stackBlurImage(sourceImage, targetCanvas, radius, blurAlphaChannel);
+		 * sourceImage: 图片标签元素或id
+		 * targetCanvas: canvas标签元素或id
+		 * radius: 模糊半径
+		 * blurAlphaChannel:模糊图像的RGBA（可选，默认值为false） 
+		 */
+
+		var canvas = document.getElementById('canvas'),
+			img = document.getElementById('img'),
+			tab = document.getElementById('tab'),
+			lis = tab.getElementsByTagName('li'),
+			range = document.getElementById('range'),
+			image = new Image(),
+			iW = 0, iH = 0;
+		// 获取图片路径，以判断图片是否加载完成
+		image.src = img.src;
+		// 检测是否支持canvas
+		if (canvas.getContext('2d')) {
+			var ctx = canvas.getContext('2d');
+		}
+		// 图片加载完成
+		image.onload = function() {
+			iW = this.width;
+			iH = this.height;
+			// 设置canvas宽高
+			canvas.setAttribute('width', iW);
+			canvas.setAttribute('height', iH);
+			// 图片加载完成，设置初始化
+			stackBlurImage('img', 'canvas', 0, false);
+			// 监听滑块方法
+			range.addEventListener('change', function() {
+				// 滑动滑块，改变模糊程度
+				stackBlurImage('img', 'canvas', this.value, false);
+			}, false);
+		};
+
+		// 遍历绑定事件
+		for (var i=0,len=lis.length; i<len; i++) {
+			// 绑定点击时间
+			lis[i].addEventListener('click', function() {
+				var index = this.getAttribute('data-id');
+				range.value = 0;
+				switch(index) {
+					//stackBlurImage 方式模糊
+					case '0': 
+						// 移除事件
+						range.removeEventListener('change', function() {}, false);
+						stackBlurImage('img', 'canvas', 0, false);
+						range.addEventListener('change', function() {
+							stackBlurImage("img", "canvas", this.value, false);
+						}, false);
+						break;
+					//stackBlurCanvasRGB 方式模糊
+					case '1':
+						// 重新绘制图片
+						ctx.drawImage(img, 0, 0, iW, iH);
+						range.removeEventListener('change', function() {}, false);
+						range.addEventListener('change', function() {
+							stackBlurCanvasRGB('canvas', 0, 0, iW, iH, this.value);
+						}, false);
+						break;
+					//stackBlurCanvasRGBA 方式模糊
+					case '2':
+						ctx.drawImage(img, 0, 0, iW, iH);
+						range.removeEventListener('change', function() {}, false);
+						range.addEventListener('change', function() {
+							stackBlurCanvasRGBA('canvas', 0, 0, iW, iH, this.value);
+						}, false);
+						break;		
+				}
+			}, false);
+		}
+
+	})(window);
+	</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>公司项目查找</title>
+	<style>
+		body {text-align:center;padding:100px 0;font-family:"Microsoft YaHei";background:#f5f5f5;text-shadow:0 1px 0 #fff;}
+		ul, ol {margin:0;padding:0;list-style:none;}
+		h1,h2 {font-weight:normal;color:#333;}
+		h1 {margin-bottom:40px;}
+		input {font-size:16px;font-family:"Microsoft YaHei";outline:none;}
+		input[type="text"] {width:360px;height:38px;padding:0 10px;margin-right:20px;border:1px solid #ccc;}
+		input[type="text"]:focus {box-shadow:0 1px 4px rgba(0,0,0,.2);}
+		input[type="button"] {height:42px;line-height:38px;width:100px;cursor:pointer;background:#fff;border:1px solid #ccc;}
+		input[type="button"]:hover {background:#eee;}
+		.search {width:510px;margin:0 auto 40px;text-align:left;}
+		.search p {font-size:14px;color:#333;margin:8px 0;}
+		.search_type li {display:inline-block;*display:block;*zoom:1;margin-right:15px;cursor:pointer;line-height:40px;color:#999;}
+		.search_type li.on {color:#333;}
+		.search_list {width:1024px;margin:0 auto;padding-bottom:1px;overflow:hidden;}
+		.search_list li {float:left;width:200px;line-height:50px;cursor:pointer;border:1px solid #ccc;margin:0 -1px -1px 0;background:#fff;}
+		.search_list li:hover {background:#eee;}
+		/*弹出框*/
+		.box {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);}
+		.box_txt {display:none;position:fixed;top:50%;left:50%;background:#fff;font-size:20px;padding:20px 60px;transform:translate(-50%,-50%);border-radius:5px;box-shadow:0 1px 10px rgba(0,0,0,.6);}
+	</style>
+</head>
+<body>
+	
+	<h1>公司项目查找</h1>
+	<div class="search">
+		<!-- 选择类型 -->
+		<ul id="searchType" class="search_type">
+			<li data-type="url" class="on">访问地址</li>
+			<li data-type="file">文件夹路径</li>
+		</ul>
+		<input type="text" name="url" id="url" placeholder="请输入对应项目名称" />
+		<input type="button" id="urlBtn" value="打 开" />
+		<p>示例：六色网站项目，请输入"liuse"，回车即可！</p>
+	</div>
+	<!-- 项目列表 -->
+	<h2>项目列表</h2>
+	<ul id="searchList" class="search_list"></ul>
+	
+	<!-- 弹出框 -->
+	<div id="box" class="box"></div>
+	<div id="boxTxt" class="box_txt">E:\MoRong\AMP\htdoc\vhost6\yang</div>
+
+	<script>
+		(function() {
+
+			// url 地址
+			var dataUrl = [
+				{
+					"name": "mohe",
+					"desc": "墨和科技",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\mohe",
+					"url": "127.0.0.1/mohe"
+				},
+				{
+					"name": "mokylin",
+					"desc": "集团官网",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\mokylin",
+					"url": "127.0.0.1/mokylin"
+				},
+				{
+					"name": "gjgw",
+					"desc": "国际官网",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\gjgw",
+					"url": "127.0.0.1/gjgw"
+				},
+				{
+					"name": "xt",
+					"desc": "手机品牌站",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\xt",
+					"url": "127.0.0.1/xt"
+				},
+				{
+					"name": "marry",
+					"desc": "圣诞微信页-图片",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\marry",
+					"url": "127.0.0.1/marry"
+				},
+				{
+					"name": "chris",
+					"desc": "圣诞微信页-宣传",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\chris",
+					"url": "127.0.0.1/chris"
+				},
+				{
+					"name": "cumo",
+					"desc": "官网触摸版",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\cumo",
+					"url": "127.0.0.1/cumo"
+				},
+				{
+					"name": "gujian",
+					"desc": "古剑奇谭专题页",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\gujian",
+					"url": "127.0.0.1/gujian"
+				},
+				{
+					"name": "juezhan",
+					"desc": "决战邮件页",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\juezhan",
+					"url": "127.0.0.1/juezhan"
+				},
+				{
+					"name": "meishu",
+					"desc": "美术招聘广告",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1\\meishu",
+					"url": "127.0.0.1/meishu"
+				},
+				{
+					"name": "gulp",
+					"desc": "Gulp练习",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost3\\gulp",
+					"url": "127.0.0.3/gulp"
+				},
+				{
+					"name": "morong",
+					"desc": "默容",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost3\\morong",
+					"url": "127.0.0.3/morong"
+				},
+				{
+					"name": "127.0.0.1",
+					"desc": "127.0.0.1",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost1",
+					"url": "127.0.0.1"
+				},
+				{
+					"name": "127.0.0.2",
+					"desc": "127.0.0.2",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost2",
+					"url": "127.0.0.2"
+				},
+				{
+					"name": "127.0.0.3",
+					"desc": "127.0.0.3",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost3",
+					"url": "127.0.0.3"
+				},
+				{
+					"name": "127.0.0.4",
+					"desc": "127.0.0.4",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost4",
+					"url": "127.0.0.4"
+				},
+				{
+					"name": "127.0.0.5",
+					"desc": "127.0.0.5",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost5",
+					"url": "127.0.0.5"
+				},
+				{
+					"name": "127.0.0.6",
+					"desc": "127.0.0.6",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost6",
+					"url": "127.0.0.6"
+				},
+				{
+					"name": "127.0.0.7",
+					"desc": "127.0.0.7",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost7",
+					"url": "127.0.0.7"
+				},
+				{
+					"name": "127.0.0.8",
+					"desc": "127.0.0.8",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost8",
+					"url": "127.0.0.8"
+				},
+				{
+					"name": "127.0.0.9",
+					"desc": "127.0.0.9",
+					"file": "F:\\MoRong\\AMP\\htdoc\\vhost9",
+					"url": "127.0.0.9"
+				}
+			];
+
+			// 公用功能
+			var morong = function() {
+				return {
+					// 获取ID
+					$$: function(id) {
+						return (!id) ? null : document.getElementById(id);
+					},
+					// 返回事件目标
+					eventFun: function(event) {
+						var e = event || window.event;
+						return e.target || e.srcElement;
+					}
+				}
+			}();
+
+			// 打开URL构造函数
+			function ProjectSearch(obj) {
+				this.url = morong.$$(obj.url);		// 接收URL文本框
+				this.btn = morong.$$(obj.btn);		// 打开按钮
+				this.list = morong.$$(obj.list);	// 项目列表
+				this._type = morong.$$(obj._type);	// 搜索类型
+				this.box = morong.$$(obj.box);		// 弹出框
+				this.boxTxt = morong.$$(obj.boxTxt);// 弹出内容
+				this.dataUrl = obj.dataUrl;			// 项目数据
+				this.len = this.dataUrl.length;		// 项目数量
+				this.selType = "url";	// 选择类型
+			}
+			// 原型方法
+			ProjectSearch.prototype = {
+				constructor: ProjectSearch,
+				// 获取项目列表
+				getListDesc: function() {
+					var strHTML = "", i;
+					// 遍历项目
+					for (i = 0; i < this.len; i++) {
+						var d = this.dataUrl[i];
+						strHTML += "<li data-name='"+d.name+"' title="+d.name+">"+d.desc+"</li>";
+					}
+					// 插入数据
+					this.list.innerHTML = strHTML;
+				},
+				// 获取URL并打开
+				getUrlContent: function(name) {
+					var val = name || this.url.value,
+						flag = false,
+						url;
+					// 如果是点击项目列表
+					if (!name) {
+						if (val == '') {
+							alert("内容不能为空！");
+							return false;
+						}
+					}
+					// 判断类型
+					if (this.selType == "url") {
+						// 遍历查找内容
+						for (var i = 0; i < this.len; i++) {
+							if (this.dataUrl[i].name == val) {
+								url = "http://"+this.dataUrl[i].url;
+								break;
+							}
+						}
+					} else if (this.selType == "file") {
+						// 遍历查找内容
+						for (var i = 0; i < this.len; i++) {
+							if (this.dataUrl[i].name == val) {
+								url = this.dataUrl[i].file;
+								flag = true;
+								break;
+							}
+						}
+					}
+					// 如果没有找到
+					if (!url) {
+						alert("没有找到此项目，请重新输入！");
+						return false;
+					}
+					// 判断打开url或显示文件路径
+					(!flag) ? window.open(url) : this.promptBox(url);					
+				},
+				classTag: function(target) {
+					var	list = this._type.getElementsByTagName("li"),	// 搜索类型列表
+						len = list.length;
+					for (var i = 0; i < len; i++) {
+						list[i].className = "";		// 移除所有class
+					}
+					target.className = "on";	// 添加给当前点击元素
+					this.selType = target.getAttribute("data-type");	// 设置类型
+				},
+				// 提示框
+				promptBox: function(file) {
+					this.boxTxt.innerHTML = file;		// 插入数据
+					this.box.style.display = "block";	// 显示
+					this.boxTxt.style.display = "block";
+				},
+				// 初始化
+				init: function() {
+					var _self = this;
+					_self.url.focus();	// 默认聚焦
+					_self.getListDesc();	// 展示项目列表
+					// 按钮监听
+					_self.btn.addEventListener("click", function() {
+						_self.getUrlContent(false);
+					}, false);
+					// 键盘回车键监听
+					document.addEventListener("keypress", function() {
+						if (event.keyCode == 13) {
+							_self.getUrlContent(false);
+						}
+					}, false);
+					// 绑定点击项目列表 - 事件委托
+					_self.list.addEventListener("click", function(event) {
+						var target = morong.eventFun(event);
+						if (target.nodeName.toLowerCase() == "li") {
+							//获取自定义属性内容并打开页面
+							_self.getUrlContent(target.getAttribute("data-name"));
+						}
+					}, false);
+					// 类型选择事件
+					_self._type.addEventListener("click", function(event) {
+						var target = morong.eventFun(event);
+						if (target.nodeName.toLowerCase() == "li") {
+							_self.classTag(target);
+						}
+					}, false);
+					// 点击弹出框背景隐藏弹出框
+					_self.box.addEventListener("click", function() {
+						if (this.style.display == "block") {
+							this.style.display = "none";
+							_self.boxTxt.style.display = "none";
+						}
+					}, false);
+				}
+			};
+			// 实例化
+			var project = new ProjectSearch({
+				url: "url",
+				btn: "urlBtn",
+				list: "searchList",
+				_type: "searchType",
+				box: "box",
+				boxTxt: "boxTxt",
+				dataUrl: dataUrl
+			});
+			project.init();
+		})();
+	</script>
+</body>
+</html>

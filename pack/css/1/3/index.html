@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3 3D效果</title>
+	<style type="text/css">
+		* {margin:0;padding:0;}
+		ul {list-style:none;}
+		.container {
+			width:600px;
+			height:400px;
+			margin:150px auto;
+			-webkit-perspective:800;
+		}
+		.rotate {
+			width:100%;
+			height:100%;
+			margin:0 auto;
+			-webkit-transform-style:preserve-3d;
+		}
+		.ring {
+			width:100%;
+			height:110px;
+			margin:0 auto;
+			-webkit-transform-style:preserve-3d;
+		}
+		.ring li {
+			position:absolute;	
+			left:250px;
+			width:100px;
+			height:100px;
+			opacity:.7;
+			border-radius:10px;
+			background:#835A99;
+			-webkit-transform:rotateY(0deg) translateZ(200px);
+		}
+		.ring li:nth-child(odd) {
+			background:#995C7F;
+		}
+		.ring li:nth-child(2) {
+			-webkit-transform:rotateY(30deg) translateZ(200px);
+		}
+		.ring li:nth-child(3) {
+			-webkit-transform:rotateY(60deg) translateZ(200px);
+		}
+		.ring li:nth-child(4) {
+			-webkit-transform:rotateY(90deg) translateZ(200px);
+		}
+		.ring li:nth-child(5) {
+			-webkit-transform:rotateY(120deg) translateZ(200px);
+		}
+		.ring li:nth-child(6) {
+			-webkit-transform:rotateY(150deg) translateZ(200px);
+		}
+		.ring li:nth-child(7) {
+			-webkit-transform:rotateY(180deg) translateZ(200px);
+		}
+		.ring li:nth-child(8) {
+			-webkit-transform:rotateY(210deg) translateZ(200px);
+		}
+		.ring li:nth-child(9) {
+			-webkit-transform:rotateY(240deg) translateZ(200px);
+		}
+		.ring li:nth-child(10) {
+			-webkit-transform:rotateY(270deg) translateZ(200px);
+		}
+		.ring li:nth-child(11) {
+			-webkit-transform:rotateY(300deg) translateZ(200px);
+		}
+		.ring li:nth-child(12) {
+			-webkit-transform:rotateY(330deg) translateZ(200px);
+		}
+		.ring p {
+			color:#333;
+			font-size:40px;
+			text-align:center;
+			font-weight:bold;
+			margin-top:24px;
+		}
+		.rotate {
+			-webkit-animation:spinX 7s infinite linear;
+		}
+		.ring-1 {
+			-webkit-animation:spinY 3s infinite linear;
+		}
+		.ring-2 {
+			-webkit-animation:spinY-back 4s infinite linear;
+		}
+		.ring-3 {
+			-webkit-animation:spinY 5s infinite linear;
+		}
+
+		@-webkit-keyframes spinY {
+			0% {-webkit-transform:rotateY(0deg);}
+			50% {-webkit-transform:rotateY(180deg);}
+			100% {-webkit-transform:rotateY(360deg);}
+		}
+		@-webkit-keyframes spinY-back {
+			0% {-webkit-transform:rotateY(0deg);}
+			50% {-webkit-transform:rotateY(-180deg);}
+			100% {-webkit-transform:rotateY(-360deg);}
+		}
+		@-webkit-keyframes spinX {
+			0% {-webkit-transform:rotateX(0deg);}
+			50% {-webkit-transform:rotateX(180deg);}
+			100% {-webkit-transform:rotateX(360deg);}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="rotate">
+			<ul class="ring ring-1">
+				<li><p>1</p></li>
+				<li><p>2</p></li>
+				<li><p>3</p></li>
+				<li><p>4</p></li>
+				<li><p>5</p></li>
+				<li><p>6</p></li>
+				<li><p>7</p></li>
+				<li><p>8</p></li>
+				<li><p>9</p></li>
+				<li><p>10</p></li>
+				<li><p>11</p></li>
+				<li><p>12</p></li>
+			</ul>
+			<ul class="ring ring-2">
+				<li><p>1</p></li>
+				<li><p>2</p></li>
+				<li><p>3</p></li>
+				<li><p>4</p></li>
+				<li><p>5</p></li>
+				<li><p>6</p></li>
+				<li><p>7</p></li>
+				<li><p>8</p></li>
+				<li><p>9</p></li>
+				<li><p>10</p></li>
+				<li><p>11</p></li>
+				<li><p>12</p></li>
+			</ul>
+			<ul class="ring ring-3">
+				<li><p>1</p></li>
+				<li><p>2</p></li>
+				<li><p>3</p></li>
+				<li><p>4</p></li>
+				<li><p>5</p></li>
+				<li><p>6</p></li>
+				<li><p>7</p></li>
+				<li><p>8</p></li>
+				<li><p>9</p></li>
+				<li><p>10</p></li>
+				<li><p>11</p></li>
+				<li><p>12</p></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+@charset "utf-8";
+
+.wraper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+/*loading*/
+.loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffd71f;
+    z-index: 9999;
+}
+.loading_con {
+    position: relative;
+    top: 50%;
+    width: 200px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: .16rem;
+    color: #333;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    -o-transform: translateY(-100%);
+    transform: translateY(-100%);
+}
+.loading .loading_rate {
+    font-size: .32rem;
+    line-height: 1.2;
+    font-weight: bold;
+}
+/*主要内容*/
+.container, .main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #cfcddd;
+}
+.main {
+    background: none;
+    -webkit-transform: translate3D(0,0,0);
+    -moz-transform: translate3D(0,0,0);
+    -o-transform: translate3D(0,0,0);
+    transform: translate3D(0,0,0);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -o-perspective: 1000;
+    perspective: 1000;
+}
+.box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow:hidden;
+    min-height: 100%;
+    background: #fff;
+}
+.box:nth-child(1) {
+    background: url(../images/box-bg1.jpg) no-repeat;
+    background-size: cover;
+}
+.box:nth-child(2) {
+    background: #f7edd7;
+}
+.box:nth-child(3) {
+    background: #59b45b;
+}
+/*开启GPU加速*/
+.ani {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -o-perspective: 1000;
+    perspective: 1000;
+}
+/*向上箭头*/
+.arrow {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: -12px;
+    background: url(../images/arrow.png) no-repeat 0 -36px;
+    background-size: 120% auto;
+    z-index: 99;
+    -webkit-animation: arrowTop 1.2s infinite ease-in-out;
+    -moz-animation: arrowTop 1.2s infinite ease-in-out;
+    -o-animation: arrowTop 1.2s infinite ease-in-out;
+    animation: arrowTop 1.2s infinite ease-in-out;
+}
+.box:nth-child(2) .arrow {
+    background-position:0 0;
+    background-size: 100% auto;
+}
+.box:nth-child(3) .arrow {
+	bottom:40px;
+    background-position:3px -68px;
+}
+.w300 {
+	width:300px;
+	margin:20px auto;
+}
+.indent {
+	text-indent:-999999em;
+	overflow:hidden;
+}
+/*******************************************************************
+***************************第一屏内容*******************************
+*******************************************************************/
+.logo {
+	opacity:0;
+	padding:5% 0 0 5%;
+}
+.box1.show .logo {
+	opacity:1;
+	-webkit-animation:fadeInDown .8s ease-in-out;
+	-moz-animation:fadeInDown .8s ease-in-out;
+	-o-animation:fadeInDown .8s ease-in-out;
+	animation:fadeInDown .8s ease-in-out;
+}
+/*******************************************************************
+***************************第二屏内容*******************************
+*******************************************************************/
+.box2.show .logo {
+	opacity:1;
+	-webkit-animation:fadeInDown .8s ease-in-out;
+	-moz-animation:fadeInDown .8s ease-in-out;
+	-o-animation:fadeInDown .8s ease-in-out;
+	animation:fadeInDown .8s ease-in-out;
+}
+/*******************************************************************
+***************************第三屏内容*******************************
+*******************************************************************/
+.box3.show .logo {
+	opacity:1;
+	-webkit-animation:fadeInDown .8s ease-in-out;
+	-moz-animation:fadeInDown .8s ease-in-out;
+	-o-animation:fadeInDown .8s ease-in-out;
+	animation:fadeInDown .8s ease-in-out;
+}

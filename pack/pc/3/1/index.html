@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>视差效果</title>
+	<style type="text/css">
+		* {margin:0;padding:0;}
+		html, body {overflow:hidden;width:100%;height:100%;}
+		.main {position:relative;left:50%;width:1920px;height:1350px;margin-left:-960px;}
+		.bg {position:absolute;top:0;left:0;width:100%;height:100%;}
+		.bg i {position:absolute;top:0;left:0;width:100%;height:100%;background:url(./img/bg.jpg) no-repeat;}
+		.txt {position:absolute;top:0;left:0;width:100%;height:100%;}
+		.txt i {position:absolute;top:38%;left:50%;width:777px;height:239px;margin-left:-388.5px;background:url(./img/text.png) no-repeat;}
+	</style>
+</head>
+<body>
+	<div id="main" class="main">
+		<div id="bg" class="bg layer" data-depth="0.30"><i></i></div>
+		<div id="txt" class="txt layer" data-depth="0.40"><i></i></div>
+	</div>
+
+	<!--<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="jquery.parallax.min.js"></script>
+	<script type="text/javascript">
+		(function() {
+			$('#main').parallax({
+                calibrateX: false,
+                calibrateY: true,
+                invertX: false,
+                invertY: false,
+                limitX: false,
+                limitY: false,
+                scalarX: 12,
+                scalarY: 12,
+                frictionX: 0.2,
+                frictionY: 0.1,
+                originX: 0.0,
+                originY: 1.0
+            });
+		})();
+	</script>-->
+	<script type="text/javascript">
+		(function(window, undefined) {
+
+			var morong = function() {
+				return {
+					$$: function(id) {
+						return (!id) ? null : document.getElementById(id); 
+					},
+					addHandler: function(element, type, handler) {
+						if (element.addEventListener) {
+							element.addEventListener(type, handler, false);
+						} else if (element.attachEvent) {
+							element.attachEvent("on" + type, handler);
+						} else {
+							element["on" + type] = handler;
+						}
+					},
+					getEvent: function(event) {
+						return event ? event : window.event;
+					}
+				};
+			}();
+
+			// **************************************
+			// 鼠标移动构造函数
+			// **************************************
+			function BoxMouseOver(opts) {
+				this.box = opts.box;		// 最大元素
+				this.bg = opts.bg;			// 背景
+				this.txt = opts.txt;		// 文字
+				this.ua = navigator.userAgent.toLowerCase();
+				this.ie = 10;
+				this.startX = 0;
+				this.startY = 0;
+				this.moveX = 0;
+				this.moveY = 0;
+			}
+			BoxMouseOver.prototype = {
+				constructor: BoxMouseOver,
+				transAni: function(el, x, y, s) {
+					var x = x * s,
+						y = y * s;
+
+					if (this.ie >= 10) {
+						el.style.cssText = "-webkit-transform: translate3d("+(-x)+"px, "+(-y)+"px, 0);"+
+							"-moz-transform: translate3d("+(-x)+"px, "+(-y)+"px, 0);"+
+							"-o-transform: translate3d("+(-x)+"px, "+(-y)+"px, 0);"+
+							"transform: translate3d("+(-x)+"px, "+(-y)+"px, 0);"+
+							"-webkit-transform-style: preserve-3d;"+
+							"-moz-transform-style: preserve-3d;"+
+							"-o-transform-style: preserve-3d;"+
+							"transform-style: preserve-3d;"+
+							"-webkit-backface-visibility: hidden;"+
+							"-moz-backface-visibility: hidden;"+
+							"-o-backface-visibility: hidden;"+
+							"backface-visibility: hidden;";
+					} else {
+						el.style.cssText = "left:"+(-x)+"px; top:"+(-y)+"px";
+					}
+				},
+				// 设置元素动画参数
+				setEleAniPar: function() {
+					var _self = this;
+					// 鼠标移动
+					morong.addHandler(_self.box, "mousemove", function(event) {
+						var e = morong.getEvent(event),
+							x = e.clientX,
+							y = e.clientY;
+						_self.transAni(_self.bg, x, y, 0.04, 0);
+						_self.transAni(_self.txt, x, y, 0.06, 0);
+					});
+				},
+				init: function() {
+					if (this.ua.match(/msie ([\d.]+)/)) {
+						this.ie = parseInt(this.ua.match(/msie ([\d.]+)/)[1]);
+					}
+					this.setEleAniPar();
+				}
+			};	
+			new BoxMouseOver({
+				box: morong.$$("main"),
+				bg: morong.$$("bg"),
+				txt: morong.$$("txt")
+			}).init();
+
+		})();
+
+	</script>
+</body>
+</html>

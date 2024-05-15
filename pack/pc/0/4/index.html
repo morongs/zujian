@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>图片上传</title>
+	<style type="text/css">
+	#img {
+		width: 200px;
+		height: 200px;
+		background: url(./images/loading.gif) no-repeat center center;
+	}
+	</style>
+</head>
+<body>
+	<div>
+		<img src="./images/1.jpg" width="500" />
+		<p>正在裁剪图片，请稍等！</p>
+	</div>
+	<div id="img"></div>
+
+
+	<script type="text/javascript" src="./js/smartcrop.js"></script>
+	<script type="text/javascript">
+		var img = document.createElement('img'),
+			// 图片裁剪参数
+			options = {debug: true, width: 200, height: 200};
+		img.src = './images/1.jpg';
+		// 图片加载成功，执行裁剪
+		// （注意，裁剪需要在图片加载成功后执行）
+		img.onload = function() {
+			// 图片裁剪方法
+			SmartCrop.crop(img, options, function(result){
+				console.log(result);
+				var crop = result.topCrop,
+					canvas = document.createElement('canvas'),
+					ctx = canvas.getContext('2d');
+				canvas.width = options.width;
+	            canvas.height = options.height;
+	            // 图片载入canvas中
+	            ctx.drawImage(img, crop.x, crop.y, crop.width, crop.height, 0, 0, canvas.width, canvas.height);
+	            var hp = document.getElementById('img');
+	            // 添加到页面元素
+	            hp.appendChild(canvas);
+	            // debug用
+	            hp.appendChild(result.debugCanvas);
+			});
+		}
+
+	</script>
+</body>
+</html>

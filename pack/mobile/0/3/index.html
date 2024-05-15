@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=no;"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />     
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />     
+	<meta content="telephone=no" name="format-detection" /> 
+	<meta http-equiv="pragma" content="no-cache" />
+	<!-- windows phone 点击无高光 -->
+	<meta name="msapplication-tap-highlight" content="no">
+	<title>摇晃手机效果</title>
+	<style type="text/css">
+		* {margin:0;padding:0;}
+		ul, ol {list-style:none;}
+		body {color:#999;background:#292D2E;text-align:center;overflow:hidden;}
+		.motion {position: relative;margin:100px 0 0;padding-top:210px;}
+		.motion img {
+			position:absolute;
+			top:0;
+			left:50%;
+			margin-left:-95px;
+			-webkit-animation:motion 1s infinite ease-out;
+			animation:motion 1s infinite ease-out;
+			-webkit-transform-origin:left bottom;
+			transform-origin:left bottom;
+		}
+		.star {
+			position:absolute;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+			overflow:hidden;
+		}
+		.star li {
+			position:absolute;
+			top:-120px;
+			height:2px;
+			width:120px;
+			opacity:0;
+			background: -webkit-linear-gradient(top left, #eee, transparent);
+			background: linear-gradient(top left, #eee, transparent);
+			-webkit-border-radius:20px; 
+			border-radius:20px; 
+		}
+		.star.show li {
+			-webkit-animation:star 2s infinite ease-in-out;
+			animation:star 2s infinite ease-in-out;
+		}
+		.star li:nth-child(1) {
+			left:25%;
+			-webkit-animation-delay:.4s;
+			animation-delay:.4s;
+		}
+		.star li:nth-child(2) {
+			left:45%;
+			-webkit-animation-delay:.8s;
+			animation-delay:.8s;
+		}
+		.star li:nth-child(3) {
+			left:65%;
+			-webkit-animation-delay:1s;
+			animation-delay:1s;
+		}
+		.star li:nth-child(4) {
+			left:90%;
+			-webkit-animation-delay:.2s;
+			animation-delay:.2s;
+		}
+		.star li:nth-child(5) {
+			top:8%;
+			left:92%;
+			-webkit-animation-delay:1.8s;
+			animation-delay:1.8s;
+			-webkit-animation-timing-function: ease-out;
+			animation-timing-function: ease-out;
+		}
+		.star li:nth-child(6) {
+			top:25%;
+			left:95%;
+			-webkit-animation-delay:1.2s;
+			animation-delay:1.2s;
+		}
+		.loading {
+			position:fixed;
+			top:50%;
+			left:50%;
+			width:100px;
+			height:100px;
+			margin:-50px 0 0 -50px;
+			opacity:0;
+			background:url('loading.png');
+			background-size:100% auto;
+			-webkit-animation:loading .4s infinite linear;
+			animation:loading .4s infinite linear;
+			-webkit-transition:all .4s ease;
+			transition:all .4s ease;
+		}
+		@-webkit-keyframes motion {
+			0%, 100% {-webkit-transform:rotate(-10deg);}
+			50% {-webkit-transform:rotate(5deg);}
+		}
+		@keyframes motion {
+			0%, 100% {transform:rotate(-10deg);}
+			50% {transform:rotate(5deg);}
+		}
+		@-webkit-keyframes star {
+			0% {opacity:0;-webkit-transform:translate3d(0,0,0) rotate(-50deg);}
+			20% {opacity:1;}
+			100% {opacity:0;-webkit-transform:translate3d(-300px,400px,0) rotate(-50deg);}
+		}
+		@-webkit-keyframes loading {
+			0% {-webkit-transform: rotate(0deg);}
+			100% {-webkit-transform: rotate(360deg);}
+		}
+		@keyframes loading {
+			0% {transform: rotate(0deg);}
+			100% {transform: rotate(360deg);}
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="container">
+		<div id="motion" class="motion">
+			<img src="hand.png" class="hand"/>
+			<p id="motionInfo">使用手机摇一摇，有惊喜哦！</p>
+		</div>
+		<ul id="star" class="star">
+			<li></li><li></li><li></li>
+			<li></li><li></li><li></li>
+		</ul>
+		<div id="loading" class="loading"></div>
+		<audio id='audio' src='motion.mp3' preload='auto'>你的浏览器不支持audio标签</audio>
+	</div>
+
+	<script type="text/javascript">
+	;(function(window, undefined) {
+
+		function MotionEvent(opts) {
+			this.el = opts.el;					// 消息元素
+			this.mess = opts.mess;				// 消息
+			this.loading = opts.loading;		// 显示loading
+			this.star = opts.star;				// 流星
+			this.audio = opts.audio;			// 音频播放
+			this.SHAKE_THRESHOLD = opts.shake;	// 摇动的力度大小
+			this.last_update = 0;				// 上次更新时间
+			this.x = this.y = this.z = this.last_x = this.last_y = this.last_z = 0;
+		}
+		MotionEvent.prototype = {
+			constructor: MotionEvent,
+			// 改变上下文执行环境
+			bind: function(fn, context) {
+				return function() {
+					return fn.apply(context, arguments);
+				};
+			},
+			// 判断是否支持摇一摇
+			isMotion: function() {
+
+				// 检测设备是否支持摇一摇
+				if (window.DeviceMotionEvent) {
+					window.addEventListener('devicemotion', this.bind(this.deviceMotionHandler, this), false);
+				} else {
+					this.el.innerHTML = '很遗憾，本设备不支持摇一摇功能！';
+				}
+			},
+			// 摇晃手机执行函数
+			deviceMotionHandler: function(event) {
+
+				// 获取重力的加速度
+				var acceleration = event.accelerationIncludingGravity,
+					curTime = new Date().getTime(),
+					diffTime = curTime - this.last_update;
+
+				if (diffTime > 100) {
+					this.last_update = curTime;
+
+					this.x = acceleration.x;
+					this.y = acceleration.y;
+					this.z = acceleration.z;
+					// 计算摇动
+					var speed = Math.abs(this.x + this.y + this.z - this.last_x - this.last_y - this.last_z) / diffTime * 10000;
+					// 如果摇动的力度大于初始值，则进行对应操作
+					if (speed > this.SHAKE_THRESHOLD) {
+						this.showMotionInfo();
+					}
+
+					this.last_x = this.x;
+					this.last_y = this.y;
+					this.last_z = this.z;
+				}
+			},
+			// 显示摇动信息
+			showMotionInfo: function() {
+				var self = this;
+				this.loading.style.opacity = 1;
+				this.audio.play();
+				setTimeout(function() {
+					self.el.innerHTML = self.mess;
+					this.star.className += ' show';
+					self.loading.style.opacity = 0;
+					// 移除摇动事件
+					window.removeEventListener('devicemotion', self.bind(self.deviceMotionHandler, self), false);
+				}, 800);
+			},
+			init: function() {
+				this.isMotion();
+			}
+		};
+		
+		window.MotionEvent = MotionEvent;
+
+	})(window);
+
+	// 实例化
+	new MotionEvent({
+		el: document.getElementById('motionInfo'),
+		loading: document.getElementById('loading'),
+		star: document.getElementById('star'),
+		audio: document.getElementById('audio'),
+		mess: '恭喜你中奖了，摇到了一场流星雨！',
+		shake: 800
+	}).init();
+
+	</script>
+</body>
+</html>

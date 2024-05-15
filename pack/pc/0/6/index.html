@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>抽奖功能</title>
+	<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+		font-family: 'Microsoft YaHei', 'SimSun';
+	}
+	h1,h2,h3,h4,h5,h6 {
+		font-weight:normal;
+	}
+	body {
+		text-align: center;
+	}
+	ul, ol {
+		list-style: none;
+	}
+	.lottery-title {
+		color: #333;
+		line-height: 1;
+		padding: 15px 0 18px;
+		background: #e8e8e8;
+	}
+	.lottery-number {
+		color: #f00;
+		font-size: 140px;
+		font-weight: bold;
+		margin: 25px auto;
+		line-height: 1.4;
+		letter-spacing: 5px;
+	}
+	.lottery-btn {
+		width: 280px;
+		color: #fff;
+		font-size:26px;
+		line-height: 60px;
+		border: none;
+		cursor: pointer;
+		background: #f6383a;
+		margin-bottom: 10px;
+		letter-spacing: 4px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+	}
+	.lottery-btn:hover {
+		background: #f00b0d;
+	}
+	.lottery-clear {
+		margin-bottom: 20px;
+	}
+	.lottery-option {
+		margin: 0 auto 30px;
+		line-height: 55px;
+	}
+	.lottery-option li {
+		display: inline-block;
+		padding: 0 25px;
+		margin: 0 8px;
+		cursor: pointer;
+		font-size: 20px;
+		line-height: 48px;
+		border: 1px solid #666;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+	}
+	.lottery-option li.on {
+		color: #fff;
+		background: #f00;
+		border-color: #f00;
+	}
+	.winning-main {
+		margin-bottom: 20px;
+	}
+	.lottery-option h2, .winning-main h2 {
+		display: inline-block;
+		padding: 0 52px;
+		line-height: 50px;
+		margin-bottom: 12px;
+		border-bottom: 1px dashed #ccc;
+	}
+	.winning-main li {
+		font-size: 20px;
+		line-height: 1.6;
+	}
+	.winning-main li:first-child {
+		color: red;
+	}
+	</style>
+</head>
+<body>
+	
+	<div class="lottery">
+		<h1 class="lottery-title">云吉抽奖系统</h1>
+		<!-- 抽奖数字 -->
+		<div id="number" class="lottery-number"></div>
+		<input type="button" id="lotteryBtn" class="btn lottery-btn" value="抽奖" />
+		<!-- 抽奖选项 -->
+		<div class="lottery-clear"><a href="javascript:;" id="clearBtn">清除抽奖系统缓存</a></div>
+		<div class="lottery-option">
+			<h2>抽奖选项</h2>
+			<ul id="option"></ul>
+		</div>
+		<!-- 中奖列表 -->
+		<div class="winning-main">
+			<h2>中奖列表</h2>
+			<ul id="winningList"></ul>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	;(function(window,document,undefined) {
+		// 获取页面ID
+		var Util = function() {
+			return {
+				$$: function(id) {
+					return document.getElementById(id);
+				},
+				hasClass: function(ele, cls) {
+					return ele.className.match(new RegExp("(\\s|^)" + cls + "(\\s|$)"))
+				},
+				addClass: function(ele, cls) {
+					this.hasClass(ele, cls) || (ele.className += " " + cls)
+				},
+				removeClass: function(ele, cls) {
+					if (this.hasClass(ele, cls)) {
+						var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
+						ele.className = ele.className.replace(reg, "")
+					}
+				},
+				removeAllClass: function(ele, cls) {
+					for (var i=0,len=ele.length; i < len; i++) {
+						this.removeClass(ele[i], cls);	
+					}
+				}
+			};
+		}();
+
+		// 抽奖对象
+		function Lottery(opts) {
+			this.number = opts.number;			// 抽奖码元素
+			this.btn = opts.btn;				// 抽奖按钮元素
+			this.list = opts.list;				// 中奖列表
+			this.option = opts.option;			// 抽奖选项
+			this.clearBtn = opts.clearBtn;		// 清除本地存储按钮
+			this.max = opts.max || 100;			// 抽奖最大人数
+			this.speed = opts.speed || 20;		// 抽奖码变换速度
+			this.on = opts.on || 'on';			// 抽奖按钮状态
+			this.optionVal = 0;					// 抽奖选项，默认幸运奖:0
+			this.codeArr = [];					// 抽奖码数组
+			this.indexVal = 0;					// 数组索引
+			this.defaultVal = '';				// 默认占位值
+			this.timer = '';					// 定时器
+			this.optionArr = opts.optionArr || 
+			['一等奖', '二等奖', '三等奖', '幸运奖'];	// 中奖选项值
+
+			this.init();
+		}
+		// 抽奖对象
+		Lottery.prototype = {
+			constructor: Lottery,
+			// 生成抽奖码
+			generLuckCode: function() {
+				var strMax = this.max+'',
+					maxLen = strMax.length;
+				// 获取数值字符串长度
+				for (var k=0; k < maxLen; k++) {
+					this.defaultVal += '0';
+				}
+				// 设置默认值
+				this.number.innerHTML = this.defaultVal;
+				// 如果本地存储有数据，则获取本地存储数据
+				if (localStorage.getItem('code')) {
+					// 本地存储数据，转为数组
+					this.codeArr = localStorage.getItem('code').split(',');
+				} else {
+					// 遍历抽奖人数数据
+					for (var i=1; i <= this.max; i++) {
+						var zero = '',
+							strI = i+'',
+							strLen = strI.length;
+						// 不足最大值位数，数字前面补0
+						for (var j=0,len=maxLen-strLen; j < len; j++) {
+							zero += '0';
+						}
+						// console.log(zero + strI);
+						// 数据打入数组
+						this.codeArr.push(zero + strI);
+					}
+				}
+				// console.log(this.codeArr);
+			},
+			// 清除本地存储事件
+			clearLocalStorage: function() {
+				function clearEvent() {
+					if (localStorage.getItem('code')) {
+						localStorage.clear('code');
+						location.reload();
+					}
+				}
+				// 添加清除按钮事件
+				this.clearBtn.addEventListener('click', clearEvent, false);
+			},
+			// 设置抽奖类型
+			setLotteryOption: function() {
+				var _self = this,
+					strHTML = '';
+				// 遍历设置抽奖选项
+				for (var i=0,len=this.optionArr.length; i < len; i++) {
+					strHTML += '<li data-option="'+(i+1)+'">'+this.optionArr[i]+'</li>';
+				}
+				// 插入抽奖选项
+				this.option.innerHTML = strHTML;
+				// 获取子元素
+				var li = _self.option.getElementsByTagName('li'),
+					len = li.length;
+				// 设置默认选中项
+				Util.addClass(li[len-1], this.on);
+				this.optionVal = li[len-1].getAttribute('data-option');
+				// 点击抽奖选项事件
+				function lotteryOptEvent(e) {
+					var e = e || window.event,
+						target = e.target || e.srcElement;
+					// console.log(target);
+					// 判断触发点击事件是否为子元素li
+					if (target.nodeName.toLowerCase() == 'li') {
+						// 获取属性值
+						_self.optionVal = target.getAttribute('data-option');
+						// 移除全部类，并添加当前元素位置
+						Util.removeAllClass(li, _self.on);
+						Util.addClass(target, _self.on);
+					}
+				}
+				// 事件代理给父元素
+				this.option.addEventListener('click', lotteryOptEvent, false);
+			},
+			// 触发抽奖按钮	
+			lotteryBtn: function() {
+				var _self = this,
+					strHTML = '',
+					winningCode = '';
+				// 点击事件
+				function lotteryEvent() {
+					// 如果已经结束，则不做任何操作
+					if (Util.hasClass(_self.btn, 'end')) return;
+
+					// 判断执行抽奖
+					if (Util.hasClass(_self.btn, _self.on)) {
+						// 移除class
+						Util.removeClass(_self.btn, _self.on);
+						_self.btn.value = '抽奖';
+						// 清除定时器
+						clearInterval(_self.timer);
+						// 根据索引，删除数组中已中奖码
+						winningCode = _self.codeArr.splice(_self.indexVal, 1);
+						// 剩余抽奖号码打入本地存储，防止刷新页面，已抽中号码再次出现
+						localStorage.setItem('code', _self.codeArr.join(','));
+						// 如果有中奖码数，则显示页面中
+						if (winningCode.length > 0) {
+							var optionName = _self.optionArr[_self.optionVal-1];
+							// 插入中奖号码
+							if (_self.list.getElementsByTagName('li').length < 1) {
+								strHTML = '<li>'+optionName+'，中奖号码：'+winningCode+'</li>';
+								_self.list.innerHTML = strHTML;
+							} else {
+								var newLi = document.createElement('li'),
+									oldLi = _self.list.getElementsByTagName('li')[0];
+								newLi.innerHTML = optionName+'，中奖号码：'+winningCode;
+								// 在之前插入中奖信息标签
+								_self.list.insertBefore(newLi, oldLi);
+							}
+						} else {
+							_self.btn.value = '已抽完'
+							Util.addClass(_self.btn, 'end');
+						}
+					} else {
+						// 添加class
+						Util.addClass(_self.btn, _self.on);
+						_self.btn.value = '停止';
+						// 启动定时器，产生随机码
+						_self.setLottCodeInterval();
+					}
+				}
+				// 绑定监听抽奖按钮事件
+				this.btn.addEventListener('click', lotteryEvent, false);
+			},
+			// 设置抽奖码计时器
+			setLottCodeInterval: function() {
+				var _self = this,
+					codeLen = this.codeArr.length,
+					indexVal = 0,
+					strCode = '';
+				// 产生随机数函数
+				// console.log(Math.floor(Math.random()*codeLen+1));
+
+				// 设置定时器随机产生抽奖码 
+				this.timer = setInterval(function() {
+					// 获取随机索引值，数组索引值，从0开始
+					_self.indexVal = Math.floor(Math.random()*codeLen);
+					// 通过随机索引获取抽奖码，无抽奖码，设为默认值
+					strCode = _self.codeArr[_self.indexVal] || _self.defaultVal;
+					// console.log(indexVal);
+					// 输出随机数到页面中
+					_self.number.innerHTML = strCode;
+				}, this.speed);
+			},
+			// 初始化
+			init: function() {
+				this.generLuckCode();
+				this.setLotteryOption();
+				this.clearLocalStorage();
+				this.lotteryBtn();
+			}
+		};
+		// 实例化抽奖
+		new Lottery({
+			number: Util.$$('number'),
+			btn: Util.$$('lotteryBtn'),
+			list: Util.$$('winningList'),
+			option: Util.$$('option'),
+			clearBtn: Util.$$('clearBtn'),
+			max: 500
+		});
+	})(window,document);
+	</script>
+</body>
+</html>

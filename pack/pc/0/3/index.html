@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片懒加载</title>
+	<style>
+		body, ul {margin:0;padding:0;}
+		ul {list-style:none;width:400px;margin:0 auto;}
+		.container {
+			text-align:center;
+		}
+		li {
+			height:200px;
+			margin-bottom:20px;
+			background:url(./img/loading.gif) no-repeat center;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>图片懒加载（延迟加载）</h1>
+		<ul id="lazyList">
+			<li><img data-src="./img/1.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/2.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/3.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/4.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/5.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/6.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/7.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/8.jpg" src="./img/pixel.gif" /></li>
+			<li><img data-src="./img/9.jpg" src="./img/pixel.gif" /></li>
+		</ul>
+	</div>
+
+	<script>
+	(function(window, undefined) {
+
+		function addEvent(el, evt, fn) {
+			el.addEventListener ? el.addEventListener(evt, fn, false) : el.attachEvent('on'+evt, fn);
+		}
+		function removeEvent(el, evt, fn) {
+			el.removeEventListener ? el.removeEventListener(evt, fn, false) : el.detachEvent('on'+evt, fn);
+		}
+
+		function LazyLoad(opts) {
+			this.el = opts.el;				// 元素
+			this.imgSrc = opts.imgSrc;		// 图片路径
+			this.delay = opts.delay;		// 执行时间
+			this.imgs = this.el.getElementsByTagName('img');	// 获取图片
+			this.len = this.imgs.length;	// 图片数量
+			this.h = parseInt(document.documentElement.clientHeight || document.body.clientHeight);		// 获取屏幕高度
+			this.first = true;				// 第一次载入
+			this.resArr = [];				// 资源数组
+			this.curIndex = 0;				// 当前索引
+		}
+		LazyLoad.prototype = {
+			constructor: LazyLoad,
+			loadImg: function(fn) {
+				var i, img, top;
+
+				this.scrTop = parseInt(document.documentElement.scrollTop || document.body.scrollTop);
+
+				for (i = this.curIndex; i < this.len; i++) {
+					img = this.imgs[i];
+					if (img) {
+
+						// 首次载入
+						if (this.first) {
+							// 把数据打入数组
+							this.resArr.push(img.getAttribute(this.imgSrc));
+
+							img.removeAttribute(this.imgSrc);
+						}
+
+						// 获取位置
+						top = img.getBoundingClientRect().top;
+
+						// 判断图片是否在屏幕可视区域
+						if (top + this.scrTop < this.h + this.scrTop) {
+
+							// 把当前索引设置为已经遍历到的位置，防止重复遍历
+							this.curIndex = i;
+
+							// 插入数据
+							img.setAttribute('src', this.resArr[i]);
+
+							// 如果最后一个加载完毕
+							if (i == this.len - 1) {
+								// 移除滚动事件
+								removeEvent(window, 'scroll', fn);
+								clearTimeout(this.timer);
+							}
+						}
+					}
+				}
+				this.first = false;
+			},
+			init: function() {
+				var _self = this;
+
+				this.loadImg();
+
+				// 添加滚动事件
+				addEvent(window, 'scroll', function() {
+
+					// 指向滚动事件函数，用于移除
+					var fn = arguments.callee;
+					_self.timer = setTimeout(function() {
+						_self.loadImg(fn);
+					}, _self.delay);
+
+				});
+				// 窗口大小发生改变
+				addEvent(window, 'resize', function() {
+					_self.h = parseInt(document.documentElement.clientHeight || document.body.clientHeight);
+					_self.loadImg();
+				});
+			}
+		};
+
+		new LazyLoad({
+			el: document.getElementById('lazyList'),
+			imgSrc: 'data-src',
+			delay: 400
+		}).init();
+
+	})(window);
+	</script>
+</body>
+</html>

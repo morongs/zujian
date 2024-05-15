@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=no"/>
+	<title>实现手机滑动幻灯片切换</title>
+	<style>
+		ul, ol {list-style:none;margin:0px;padding:0px;}
+		.clearfix:after {display:block;content:"\200B";clear:both;height:0;}
+		.slider {
+			position:relative;
+			width:100%;
+			overflow:hidden;
+			margin-bottom:25px;
+		}
+		.slider_img {
+			position:relative;
+			width:10000px;
+			left:0;
+		}
+		.slider_img li {
+			float:left;
+			width:320px;
+		}
+		.slider img {
+			display:block;
+			width:100%;
+		}
+		.slider_nav {
+			position:absolute;
+			width:100%;
+			height:15px;
+			text-align:center;
+			bottom:15px;
+		}
+		.slider_nav li {
+			display:inline-block;
+			width:10px;
+			height:10px;
+			margin:0 2px;
+			background:#fff;
+			border-radius:50%;
+			-webkit-border-radius:50%;
+			-moz-border-radius:50%;
+			-ms-border-radius:50%;
+			-o-border-radius:50%;
+		}
+		.slider_nav li.on {
+			background:#DB5C2F;
+		}
+	</style>
+</head>
+<body>
+	
+	<section class="slider" id="slider">
+   		<ul class="slider_img clearfix">
+   			<li><img src="about-pic-01.jpg"></li>
+   			<li><img src="about-pic-02.jpg"></li>
+   			<li><img src="about-pic-03.jpg"></li>
+   			<li><img src="about-pic-04.jpg"></li>
+   		</ul>
+   		<ul class="slider_nav">
+   			<li class="on"></li>
+   			<li></li>
+   			<li></li>
+   			<li></li>
+   		</ul>
+   	</section>
+
+	<script src="zepto.min.js"></script>
+	<script>
+		window.onload = function() {
+			var $slider = $("#slider"),			// 设置滑动元素
+				$sImg = $(".slider_img"),		// 幻灯元素
+				$sNav = $(".slider_nav"),		// 当前位置元素
+				len = $sImg.find("li").length,	//图片数量
+				i = 0,		// 当前位置
+				startX, endX; // 触摸开始与滑动结束位置
+			// 设置幻灯片自适应
+			$(window).resize(function() {
+				sliderLiWidth();
+			});
+			// 获取窗口宽度 幻灯片自适应
+			function sliderLiWidth() {
+				var w = $(window).width();
+				$sImg.find("li").width(w);
+			}
+			sliderLiWidth();  // 设置图片宽度
+
+			// 触摸开始
+			$slider.on("touchstart", function(e) {
+				startX = touchLocation(e);		// 获取位置
+				clearInterval(sliderTime); 		// 清除定时器
+			});
+			// 触摸移动
+			$slider.on("touchmove", function(e) {
+				endX = touchLocation(e);
+				var _left = leftLocation($sImg, i);
+				$sImg.css("left", -(startX-endX)+_left+"px");	 // 计算当前位置	
+			});
+			// 触摸结束
+			$slider.on("touchend", function(e) {
+				e.preventDefault();
+				// 设置左右滑动判断
+				if (startX > endX) {
+					(i < len-1) ? i++ : len-1;
+					sliderAni($sImg, $sNav, i, 200);	// 调用滑动切换函数
+				} else {
+					(i > 0) ? i-- : i = 0;
+					sliderAni($sImg, $sNav, i, 200);
+				}
+				slideInterval();
+			});
+
+			// 设置定时器，默认播放
+			var sliderTime;
+			function slideInterval() {
+				sliderTime = setInterval(function() {
+					(i < len-1) ? i++ : i = 0;
+					sliderAni($sImg, $sNav, i, 400);
+				}, 3000);
+			}
+			slideInterval();
+
+		}
+		/*****************************************
+		* 幻灯片切换动画
+		* @paran el 移动元素
+		* @paran nav 标识当前位置
+		* @paran i 当前索引
+		* @paran speed 切换速度
+		* 示例：sliderAni($sImg, $sNav, i, 200);
+		*****************************************/
+		function sliderAni(el, nav, i, speed) {
+			// 获取所在位置
+			var liW = leftLocation(el, i);
+			// 设置当前位置索引
+			nav.find("li").removeClass("on").eq(i).addClass("on");
+			// 执行动画
+			el.animate({
+				left: liW+"px"
+			}, speed);
+		}
+		// 获取当前位置
+		function leftLocation(el, i) {
+			return -i*el.find("li:eq(0)").width();
+		}
+		// 获取触摸位置
+		function touchLocation(e) {
+			e.preventDefault(); // 阻止默认时间
+			var touch = e.touches[0];
+			return touch.pageX;
+		}
+	</script>
+</body>
+</html>

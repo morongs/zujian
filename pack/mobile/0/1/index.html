@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>擦除见美女</title>
+	<style type="text/css">
+		* {margin:0;padding:0;}
+		html, body {
+			height:100%;
+			overflow:hidden;
+		}
+		.container {
+			position:relative;
+			width:100%;
+			max-width:640px;
+			height:100%;
+			overflow:hidden;
+			margin:0 auto;
+		}
+		.container canvas {
+			opacity:1;
+			transition:all .2s ease-out;
+		}
+		.container canvas.hidden {
+			opacity:0;
+		}
+	</style>
+</head>
+<body>
+	<div id="container" class="container">
+		<canvas id="canvas" width="640" height="1136">你的浏览器版本过低，请升级浏览器版本</canvas>
+	</div>
+
+	<script type="text/javascript">
+	(function(window, undefined) {
+
+		// 判断touch还是mouse
+		var hastouch = 'ontouchstart' in window ? true : false,
+			touchStart = hastouch ? 'touchstart' : 'mousedown',
+			touchMove = hastouch ? 'touchmove' : 'mousemove',
+			touchEnd = hastouch ? 'touchend' : 'mouseup';
+
+		function ScratchGirls(opts) {
+			this.box = opts.box;			// 外层元素
+			this.canvas = opts.canvas;		// canvas元素
+			this.ctx = this.canvas.getContext("2d");
+			this.feel = opts.feel || 5;		// 触摸大小
+			this.w = this.box.clientWidth;		// 元素宽
+			this.h = this.box.clientHeight;		// 元素高
+			this.imgArr = opts.imgArr; 			// 图片
+			this.imgLen = this.imgArr.length;	
+			this.mask = opts.mask;				// 遮罩层
+			this.space = this.canvas.getBoundingClientRect();	// 元素与页面的间距
+			this.gap = opts.gap;				// 间隔
+			this.flag = false;
+			this.timeout;
+		}
+		ScratchGirls.prototype = {
+			constructor: ScratchGirls,
+			// 设置元素大小
+			setEleSize: function() {
+				this.canvas.setAttribute('width', this.w);
+				this.canvas.setAttribute('height', this.h);
+			},
+			// 随机图片
+			randomImg: function() {
+				var img = Math.floor(Math.random()*this.imgLen+1);
+				this.box.style.background = 'url('+img+'.jpg) no-repeat';
+				this.box.style.backgroundSize = 'cover';
+			},
+			// 重置图像
+			resetImg: function() {
+				var _self = this;
+				this.ctx.clearRect(0, 0, this.w, this.h);
+				this.ctx.globalCompositeOperation = "destination-over";
+				this.img = new Image();
+				this.img.src = this.mask;
+				// 如果图片加载完成，则绘制到画布上
+				this.img.onload = function() {
+					_self.ctx.drawImage(_self.img, 0, 0, _self.w, _self.h);
+					_self.randomImg();
+				}
+			},
+			// 图片预加载
+			touchstart: function(e) {
+				var e = e || window.event;
+				e.preventDefault();
+				clearTimeout(this.timer);
+				this.startX = hastouch ? e.touches[0].pageX : e.clientX - this.space.left;
+				this.startY = hastouch ? e.touches[0].pageY : e.clientY - this.space.top;
+
+				this.ctx.globalCompositeOperation = "destination-out";
+				this.ctx.beginPath();
+				this.ctx.arc(this.startX,this.startY,this.feel,0,2*Math.PI);
+				this.ctx.fill();
+
+				this.flag = true;
+			},
+			touchmove: function(e) {
+				var e = e || window.event;
+				e.preventDefault();
+
+				this.moveX = hastouch ? e.touches[0].pageX : e.clientX - this.space.left;
+				this.moveY = hastouch ? e.touches[0].pageY : e.clientY - this.space.top;
+
+				this.ctx.beginPath();
+				this.ctx.moveTo(this.startX, this.startY);
+				this.ctx.lineTo(this.moveX, this.moveY);
+				this.ctx.lineCap = 'round';
+				this.ctx.lineJoin = 'round';
+				this.ctx.lineWidth = 2 * this.feel;
+				this.ctx.stroke();
+
+				this.startX = this.moveX;
+				this.startY = this.moveY;
+
+			},
+			touchend: function() {
+				var _self = this;
+				this.flag = false;
+				this.timer = setTimeout(function() {
+					// getImageData复制画布上指定矩形的像素数据
+					var imgData = _self.ctx.getImageData(0,0,_self.canvas.width,_self.canvas.height),
+						dd = 0, x, y, i;
+					// imgData.width,imgData.height 将要复制的矩形区域宽高
+					for (x=0; x<imgData.width; x+=_self.gap) {
+						for (y=0; y<imgData.height; y+=_self.gap) {
+							// 由于一个imgData.data下面的像素对于4个值，rgba, 则要乘以4
+							i = (y * imgData.width + x) * 4;
+							// 获取像素点，大于0表示没有被擦除
+							if (imgData.data[i+3] > 0) {
+								dd++;
+							}
+						}
+					}
+					// 如果透明度不为0的像素比例不低于40%，则说明当前画布上有60%被擦除，则自动显示
+					if(dd/(imgData.width*imgData.height/900)<0.4) {
+						_self.canvas.className = 'hidden';
+						setTimeout(function() {
+							_self.canvas.style.display = "none";
+						}, 200);
+					}
+				}, 100);
+			},
+			init: function() {
+				var _self = this;
+				this.setEleSize();
+				this.resetImg();
+				this.canvas.addEventListener(touchStart, function(e) {
+					_self.touchstart(e);
+				}, false);
+				this.canvas.addEventListener(touchMove, function(e) {
+					_self.flag == true && _self.touchmove(e);
+				}, false);
+				this.canvas.addEventListener(touchEnd, function() {
+					_self.canvas["on"+touchStart] = null;
+					_self.canvas["on"+touchMove] = null;
+					_self.touchend();
+				}, false);
+			}
+		};
+		// 实例化
+		new ScratchGirls({
+			box: document.getElementById('container'),
+			canvas: document.getElementById('canvas'),
+			feel: 20,
+			gap: 25,
+			mask: 'mask.jpg',
+			imgArr: ['1.jpg', '2.jpg']
+		}).init();
+
+
+	})(window);
+	</script>
+</body>
+</html>
